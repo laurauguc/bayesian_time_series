@@ -1,3 +1,5 @@
+stan_models/*
+
 # History files
 .Rhistory
 .Rapp.history
