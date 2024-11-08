@@ -3,9 +3,9 @@ bayesian_arima <- function(x, order, h) { # seperate out obtaining predictions (
   d = order[2]
   if (d) {
     x_diff = difference(x, d)
-    stan_data <- list(T = length(x_diff), y = x_diff, p = order[1], q = order[3], h = h)
+    stan_data <- list(num_obs = length(x_diff), y = x_diff, p = order[1], q = order[3], h = h)
   } else {
-    stan_data <- list(T = length(x), y = x, p = order[1], q = order[3], h = h)
+    stan_data <- list(num_obs = length(x), y = x, p = order[1], q = order[3], h = h)
   }
   stan_fit <- rstan::stan(file = 'stan/ARMA_simple.stan', data = stan_data)
   return(stan_fit)
@@ -108,12 +108,12 @@ obtain_mean_pred <- function(bayesian_fit, x, d, h) {
     x_without_diff <- x
     x <- difference(x, d)
   }
-  T = length(x)
+  num_obs = length(x)
 
   # fitted values
   err_mean <- c(0)
   x_fit_mean <- c(0)
-  for (t in 2:T) {
+  for (t in 2:num_obs) {
     eta <- 0
     if (p) for (i in 1:min(p, t-1)) {eta =+ x[t-i] * phi_sims_mean[i]}
     if (q) for (i in 1:min(q, t-1)) {eta =+ err_mean[t-i] * theta_sims_mean[i]}
@@ -139,9 +139,9 @@ obtain_mean_pred <- function(bayesian_fit, x, d, h) {
     d_rem <- d - d_new
     eta <- 0
     if (p_new) for (i in 1:p_new) {eta =+ x_forecast_mean[t-i] * phi_sims_mean[i]}
-    if (p_rem) for (i in 1:p_rem) {eta =+ x[T+1-i] * phi_sims_mean[i + p_new]}
+    if (p_rem) for (i in 1:p_rem) {eta =+ x[num_obs+1-i] * phi_sims_mean[i + p_new]}
     # for mean values: error = 0
-    if (q_rem) for (i in 1:min(q_rem, t)) {eta =+ err_mean[T + 1 - i] * theta_sims_mean[i+ q_new]}
+    if (q_rem) for (i in 1:min(q_rem, t)) {eta =+ err_mean[num_obs + 1 - i] * theta_sims_mean[i+ q_new]}
     x_forecast_mean[t] <- eta
     }
 
