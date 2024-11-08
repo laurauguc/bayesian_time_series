@@ -59,7 +59,7 @@ comparison_plot <- function(frequentist_fit, bayesian_fit, x_observed, x_future)
       alpha = .2
     ) +
     geom_ribbon(
-      aes(ymin = frequentist_lb, ymax = frequentist_ub, fill = "Frequentist prediction interval"),
+      aes(ymin = frequentist_lb, ymax = frequentist_ub, fill = "Prediction interval for frequentist model"),
       alpha = .2
     ) +
     geom_line(mapping = aes(y = y_fit_mean,
