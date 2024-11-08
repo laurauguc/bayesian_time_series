@@ -81,7 +81,7 @@ comparison_plot <- function(frequentist_fit, bayesian_fit, x_observed, x_future)
     xlab("Simulation #") + ylab("Value") +
     scale_fill_manual(name = "90% Interval",
                       values = c("Bayesian credible interval" = "blue",
-                      "Frequentist prediction interval" = "orange")) +
+                      "Prediction interval for frequentist model" = "orange")) +
     scale_shape_manual(name = "Simulated datasets", values = c("Training" = 20, "Testing" = 21)) +
     scale_linetype_manual(name = "Prediction type", values = c("solid", "dashed")) +
     scale_colour_manual(name = "Statistical paradigm", values =c('blue', "orange"))
