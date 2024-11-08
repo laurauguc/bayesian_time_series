@@ -7,7 +7,7 @@ bayesian_arima <- function(x, order, h) { # seperate out obtaining predictions (
   } else {
     stan_data <- list(num_obs = length(x), y = x, p = order[1], q = order[3], h = h)
   }
-  stan_fit <- rstan::stan(file = 'stan/ARMA_simple.stan', data = stan_data)
+  stan_fit <- rstan::stan(file = 'stan_models/ARMA_simple.stan', data = stan_data)
   return(stan_fit)
 }
 
